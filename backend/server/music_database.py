@@ -1,6 +1,8 @@
 # from backend.server.database import MONGO_DETAILS
 import motor.motor_asyncio
 from bson.objectid import ObjectId
+import pafy
+
 
 MONGO_DETAILS = 'mongodb://localhost:27017'
 
@@ -10,30 +12,38 @@ music_db = client.music
 
 music_collection = music_db.get_collection('music_collection')
 
-def music_helper(music)-> dict:
+
+def music_helper(music) -> dict:
     return{
         'id': str(music['_id']),
         'music_name': music['music_name'],
         'music_artist': music['music_artist'],
-        'original_url': music['original_url']
+        'original_url': music['original_url'],
+        # 'audio_url': music['audio_url']
+        'audio_url': pafy.new(music['original_url']).getbestaudio().url
     }
 
 # CRUD OPERATION
+
+
 async def retrieve_musics():
     musics = []
     async for music in music_collection.find():
         musics.append(music_helper(music=music))
     return musics
 
+
 async def add_music(music_data: dict) -> dict:
-    music =  await music_collection.insert_one(music_data)
+    music = await music_collection.insert_one(music_data)
     new_music = await music_collection.find_one({'_id': music.inserted_id})
     return music_helper(new_music)
 
-async def retrieve_music(id: str)-> dict:
+
+async def retrieve_music(id: str) -> dict:
     music = await music_collection.find_one({'_id': ObjectId(id)})
     if music:
         return music_helper(music=music)
+
 
 async def update_music(id: str, data: dict):
     if len(data) < 1:
@@ -48,7 +58,8 @@ async def update_music(id: str, data: dict):
             return True
         return False
 
-async def delete_music(id:str):
+
+async def delete_music(id: str):
     music = await music_collection.find_one({'_id': ObjectId(id)})
     if music:
         await music_collection.delete_one({'_id': ObjectId(id)})
