@@ -19,12 +19,19 @@
         <input type="submit" value="Submit" name="" id="" />
       </p>
     </form>
-    <ul>
+    <ul class="my-5">
       <li v-for="song in music" :key="song">
-        {{ song.music_name }}
-        <audio controls>
-          <source :src="song.audio_url" type="audio/mpeg" />
-        </audio>
+        <div
+          class="container my-5 bg-gray-300 m-auto rounded-md shadow-md py-3 px-10"
+        >
+          <span class="m-auto">
+            <p>{{ song.music_name }}</p>
+            <p>{{ song.music_artist }}</p>
+          </span>
+          <audio class="container m-auto" controls>
+            <source :src="song.audio_url" type="audio/mpeg" />
+          </audio>
+        </div>
         <!-- {{ song.audio_url }} -->
       </li>
     </ul>
