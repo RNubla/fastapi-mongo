@@ -1,4 +1,4 @@
-from server.database import MONGO_DETAILS
+# from backend.server.database import MONGO_DETAILS
 import motor.motor_asyncio
 from bson.objectid import ObjectId
 

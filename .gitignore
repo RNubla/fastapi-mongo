@@ -1,4 +1,1 @@
-.vscode
-server/__pycache__
-server/models/__pycache__
-server/routes/__pycache__
+.vscode/settings.json
