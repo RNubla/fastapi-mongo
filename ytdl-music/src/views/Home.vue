@@ -17,12 +17,32 @@
         <input type="submit" value="Submit" name="" id="" />
       </p>
     </form>
-    <audio-player
+    <!-- <audio-player
       :artist="this.music[2].music_artist"
       :title="this.music[2].music_name"
       :audio_src="this.music[2].audio_url"
-    />
+    /> -->
 
+    <ul class="my-5">
+      <li v-for="song in music" :key="song">
+        <audio-player
+          :artist="song.music_artist"
+          :audio_src="song.audio_url"
+          :title="song.music_name"
+        />
+        <!-- <div
+          class="container my-5 bg-gray-300 m-auto rounded-md shadow-md py-3 px-10"
+        >
+          <span class="m-auto">
+            <p>{{ song.music_name }}</p>
+            <p>{{ song.music_artist }}</p>
+          </span>
+          <audio class="container m-auto" controls>
+            <source :src="song.audio_url" type="audio/mpeg" />
+          </audio>
+        </div> -->
+      </li>
+    </ul>
     <!-- <ul class="my-5">
       <li v-for="song in music" :key="song">
         <div
@@ -103,11 +123,11 @@ export default {
       });
     }, */
   },
-  created() {
+  // created() {
+  //   this.getData();
+  // },
+  mounted() {
     this.getData();
   },
-  /* mounted() {
-    this.getData();
-  }, */
 };
 </script>

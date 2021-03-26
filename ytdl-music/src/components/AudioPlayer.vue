@@ -136,9 +136,6 @@ export default {
       tracks: null,
     };
   },
-  mounted() {
-    this.tracks;
-  },
   methods: {
     togglePlay() {
       if (this.audio.paused) {
