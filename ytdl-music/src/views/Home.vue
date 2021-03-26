@@ -17,55 +17,22 @@
         <input type="submit" value="Submit" name="" id="" />
       </p>
     </form>
+    <audio-player />
 
-    <ul class="my-5">
-      <!-- <li><audio-player :music_data="music" /></li> -->
+    <!-- <ul class="my-5">
       <li v-for="song in songs" :key="song">
         <audio-player
           :title="song.music_name"
           :artist="song.music_artist"
           :audio_src="song.audio_url"
         />
-
-        <!-- <div
-          class="container my-5 bg-gray-300 m-auto rounded-md shadow-md py-3 px-10"
-        >
-          <span class="m-auto">
-            <p>{{ song.music_name }}</p>
-            <p>{{ song.music_artist }}</p>
-          </span>
-          <audio class="container m-auto" controls>
-            <source :src="song.audio_url" type="audio/mpeg" />
-          </audio>
-        </div> -->
-        <!-- </li> -->
-      </li>
-    </ul>
-
-    <!-- <ul class="my-5">
-      <li v-for="song in music" :key="song">
-        <div
-          class="container my-5 bg-gray-300 m-auto rounded-md shadow-md py-3 px-10"
-        >
-          <span class="m-auto">
-            <p>{{ song.music_name }}</p>
-            <p>{{ song.music_artist }}</p>
-          </span>
-          <audio class="container m-auto" controls>
-            <source :src="song.audio_url" type="audio/mpeg" />
-          </audio>
-        </div>
-      </li>
-    </ul> -->
-    <!-- <ul>
-      <li v-for="url in music_url" :key="url">
-        {{ url }}
       </li>
     </ul> -->
   </div>
 </template>
 
 <script>
+// import AudioPlayerNew from "../components/AudioPlayer-new.vue";
 import AudioPlayer from "../components/AudioPlayer.vue";
 // @ is an alias to /src
 // import HelloWorld from "@/components/HelloWorld.vue";
@@ -74,6 +41,7 @@ export default {
   name: "Home",
   components: {
     AudioPlayer,
+    // AudioPlayerNew,
     // HelloWorld,
   },
   data() {
@@ -84,7 +52,7 @@ export default {
         original_url: "",
         audio_url: "",
       },
-      music: [],
+      track: [],
       errors: [],
       music_url: [],
     };
@@ -100,8 +68,11 @@ export default {
       this.$store.dispatch("addSong", this.input);
     },
   },
+  created() {
+    this.$store.dispatch("fetchSongs");
+  },
   mounted() {
-    this.$store.dispatch("getSongs");
+    // this.$store.dispatch("getSongs");
   },
 };
 </script>
