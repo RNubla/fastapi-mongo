@@ -1,23 +1,25 @@
 <template>
-  <div class="home bg-gray-300">
-    <form method="post" @submit.prevent="addSong">
-      <p>
-        <label for="">Song Name</label>
-        <input type="text" v-model="input.music_name" required />
-      </p>
-      <p>
-        <label for="">Artist Name</label>
-        <input type="text" v-model="input.music_artist" required />
-      </p>
-      <p>
-        <label for="">Youtube URL</label>
-        <input type="text" v-model="input.original_url" required />
-      </p>
-      <p>
-        <input type="submit" value="Submit" name="" id="" />
-      </p>
-    </form>
-    <audio-player />
+  <div class="container bg-gray-200 h-screen mx-auto max-h-full mx-auto">
+    <div class="home">
+      <form class="flex" method="post" @submit.prevent="addSong">
+        <p>
+          <label for="">Song Name</label>
+          <input type="text" v-model="input.music_name" required />
+        </p>
+        <p>
+          <label for="">Artist Name</label>
+          <input type="text" v-model="input.music_artist" required />
+        </p>
+        <p>
+          <label for="">Youtube URL</label>
+          <input type="text" v-model="input.original_url" required />
+        </p>
+        <p>
+          <input type="submit" value="Submit" name="" id="" />
+        </p>
+      </form>
+      <audio-player />
+    </div>
   </div>
 </template>
 

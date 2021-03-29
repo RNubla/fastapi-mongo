@@ -4,6 +4,7 @@ export default createStore({
   state: {
     audio: null,
     isPlaying: false,
+    currentTime: 0,
     songs: [],
     currentSongIndex: 0,
     currentSong: {
@@ -58,7 +59,12 @@ export default createStore({
     getListOfSongs: (state) => {
       return state.songs;
     },
-
+    getAudioDuration: (state) => {
+      return state.audio.duration;
+    },
+    getIsPlaying: (state) => {
+      return state.isPlaying;
+    },
     getUpdatedSongs: (state) => {
       return state.songs;
     },
@@ -84,8 +90,8 @@ export default createStore({
   actions: {
     async fetchSongs({ commit }) {
       await axios
-        // .get("http://localhost:8000/music")
-        .get("http://192.168.1.233:8000/music")
+        .get("http://localhost:8000/music")
+        // .get("http://192.168.1.233:8000/music")
         .then((response) => {
           commit("SET_SONGS", response.data.data);
           // getters.onLoadSongs;
@@ -97,8 +103,8 @@ export default createStore({
     },
     async addSong({ commit }, payload) {
       await axios
-        // .post("http://localhost:8000/music", payload)
-        .post("http://192.168.1.233:8000/music", payload)
+        .post("http://localhost:8000/music", payload)
+        // .post("http://192.168.1.233:8000/music", payload)
         .then((response) => {
           commit("ADD_SONG", response.data.data);
         })
@@ -108,15 +114,20 @@ export default createStore({
     },
     togglePlay({ state }) {
       console.log("audiosrc", state.currentSong.title);
-      console.log("audiosrc", state.currentSong.audio_src);
+      // console.log("audiosrc", state.currentSong.audio_src);
       if (state.audio.paused) {
         // state.audio.src = state.currentSong.audio_src;
         state.audio.play();
         state.isPlaying = true;
+        if (state.isPlaying) {
+          setInterval(state.currentTime++, 1000);
+        }
+        // state.currentTime++;
         // console.log(state.isPlaying);
       } else {
         state.audio.pause();
         state.isPlaying = false;
+        // state.currentTime;
         // console.log(state.isPlaying);
       }
     },

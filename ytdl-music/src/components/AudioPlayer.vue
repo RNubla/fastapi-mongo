@@ -1,27 +1,30 @@
 <template>
-  <div class="flex-inline">
+  <div class="">
     <div
       class="max-w-md mx-auto my-10 bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-2xl"
     >
-      <div class="md:flex">
-        <div class="md:flex-shrink-0">
+      <div class=":flex">
+        <div class=":flex-shrink-0">
           <img
-            class="h-48 w-full object-cover md:w-48"
+            class="h-48 w-full object-cover :w-48"
             src="https://tailwindcss.com/img/card-top.jpg"
             alt=""
           />
         </div>
-        <div class="p-4 flex flex-col justify-center">
-          <div class="uppercase tracking-wide text-sm font-semibold">
-            {{ title }}
-          </div>
-          <div
-            class="block mt-1 text-md leading-tight font-medium text-gray-500"
-          >
-            {{ artist }}
+
+        <div class="flex-grow-0 my-auto px-2">
+          <div class="p-4 flex flex-col flex-none justify-center">
+            <div class="uppercase tracking-wide text-sm font-semibold">
+              {{ title }}
+            </div>
+            <div
+              class="block mt-1 text-md leading-tight font-medium text-gray-500"
+            >
+              {{ artist }}
+            </div>
           </div>
         </div>
-        <div class="p-4">
+        <div class="p-4 flex-none">
           <!-- Buttons -->
           <div class="flex justify-evenly mx-auto px-8">
             <!-- Rewind -->
@@ -114,16 +117,16 @@
       </div>
     </div>
     <div
-      class="bg-gray-200"
-      mb-12
-      rounded-xl
-      shadow-2xl
-      overflow-hidden
-      inline-flex
+      class="max-w-md mx-auto my-10 bg-white rounded-md shadow-2xl overflow-hidden md:max-w-2xl"
     >
       <ul class="">
-        <li v-for="song in songs" :key="song">
-          {{ song.music_name }}
+        <li class="my-2 border-b-2" v-for="song in songs" :key="song">
+          <div class="flex">
+            <p class="flex-1">{{ song.music_name }}</p>
+            <p class="flex-1">{{ song.music_artist }}</p>
+            {{ seconds }}/{{ this.$store.state.audio.duration }}
+            {{ getIsPlaying }}
+          </div>
         </li>
       </ul>
     </div>
@@ -139,21 +142,23 @@ export default {
       artist: "getCurrentSongArtist",
       _og: "getCurrentSongOriginalURL",
       id: "getCurrentSongID",
-      _audio: "getCurrentSongAudio",
       songs: "getListOfSongs",
+      getDuration: "getAudioDuration",
+      getIsPlaying: "getIsPlaying",
     }),
   },
   data() {
     return {
+      seconds: 0,
+      interval: null,
       audio: null,
       circleLeft: null,
       barWidth: null,
       duation: null,
-      currentTime: null,
+      // currentTime: this._currentTime,
       isTimerPlaying: false,
       isPlaying: false,
       tracks: null,
-      audioSrc: this._audio,
     };
   },
 
@@ -162,24 +167,31 @@ export default {
   },
   methods: {
     ...mapActions({
-      togglePlay: "togglePlay",
+      _togglePlay: "togglePlay",
       fetchSongs: "fetchSongs",
     }),
-    // togglePlay() {
-
-    // if (this.audio.paused) {
-    //   this.audio.play();
-    //   this.isTimerPlaying = true;
-    //   this.isPlaying = true;
-    // } else {
-    //   this.audio.pause();
-    //   this.isTimerPlaying = false;
-    //   this.isPlaying = false;
-    // }
-    // },
     nextSong() {
       // this.audio.src = this._audio;
+      // this.songs = 0;
+      this.resetSecond;
       this.$store.dispatch("playNextSong");
+    },
+    togglePlay() {
+      if (this.getIsPlaying == true) {
+        clearInterval(this.interval);
+        console.log("stopped timer");
+      } else {
+        this.interval = setInterval(this.incrementTime, 1000);
+      }
+
+      this._togglePlay();
+    },
+    incrementTime() {
+      this.seconds = parseInt(this.seconds) + 1;
+    },
+    resetSecond() {
+      clearInterval(this.interval);
+      this.seconds == 0;
     },
     /* generateTime() {
       let width = (100 / this.audio.duation) * this.audio.currentTime;
