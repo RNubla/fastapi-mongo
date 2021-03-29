@@ -18,16 +18,6 @@
       </p>
     </form>
     <audio-player />
-
-    <!-- <ul class="my-5">
-      <li v-for="song in songs" :key="song">
-        <audio-player
-          :title="song.music_name"
-          :artist="song.music_artist"
-          :audio_src="song.audio_url"
-        />
-      </li>
-    </ul> -->
   </div>
 </template>
 
@@ -57,20 +47,15 @@ export default {
       music_url: [],
     };
   },
-  computed: {
-    songs() {
-      return this.$store.state.songs;
-    },
-  },
   methods: {
     addSong() {
       console.log(this.input);
       this.$store.dispatch("addSong", this.input);
     },
   },
-  created() {
-    this.$store.dispatch("fetchSongs");
-  },
+  // created() {
+  //   this.$store.dispatch("fetchSongs");
+  // },
   mounted() {
     // this.$store.dispatch("getSongs");
   },

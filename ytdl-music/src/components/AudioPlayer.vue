@@ -12,21 +12,10 @@
       </div>
       <div class="p-4 flex flex-col justify-center">
         <div class="uppercase tracking-wide text-sm font-semibold">
-          <!-- {{ p_tracks[0].music_name }} -->
-          <!-- {{ p_tracks }} -->
-          <!-- {{ tracks[0].music_name }} -->
           {{ title }}
         </div>
         <div class="block mt-1 text-md leading-tight font-medium text-gray-500">
-          <!-- {{ p_tracks[0].music_artist }} -->
-          <!-- {{ p_tracks }} -->
-          <!-- {{ tracks }} -->
-          <!-- {{ artist }} -->
-          <!-- {{ music_data }} -->
-          <!-- {{ audio_src }} -->
           {{ artist }}
-          <div>{{ id }}</div>
-          <div>{{ og }}</div>
         </div>
       </div>
       <div class="p-4">
@@ -60,7 +49,7 @@
               class="rounded-full h-16 w-16 bg-white shadow-inner flex items-center justify-center"
             >
               <svg
-                v-if="!this.isPlaying"
+                v-if="!this.$store.state.isPlaying"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -124,27 +113,16 @@
 </template>
 
 <script>
-const { mapGetters } = require("vuex");
+const { mapGetters, mapActions } = require("vuex");
 export default {
   computed: {
     ...mapGetters({
       title: "getCurrentSongTitle",
       artist: "getCurrentSongArtist",
-      og: "getCurrentSongOriginalURL",
+      _og: "getCurrentSongOriginalURL",
       id: "getCurrentSongID",
+      _audio: "getCurrentSongAudio",
     }),
-    /* getCurrentSongTitle() {
-      return this.$store.getters.getCurrentSongTitle;
-    },
-    getCurrentSongArtist() {
-      return this.$store.getters.getCurrentSongArtist;
-    },
-    getCurrentSongAudio() {
-      return this.$store.getters.getCurrentSongAudio;
-    },
-    getCurrentSongOrignalURL() {
-      return this.$store.getters.getCurrentSongOrignalURL;
-    }, */
   },
   data() {
     return {
@@ -156,22 +134,32 @@ export default {
       isTimerPlaying: false,
       isPlaying: false,
       tracks: null,
-      audioSrc: this.getCurrentSongAudio,
+      audioSrc: this._audio,
     };
   },
+
+  created() {
+    this.fetchSongs();
+  },
   methods: {
-    togglePlay() {
-      if (this.audio.paused) {
-        this.audio.play();
-        this.isTimerPlaying = true;
-        this.isPlaying = true;
-      } else {
-        this.audio.pause();
-        this.isTimerPlaying = false;
-        this.isPlaying = false;
-      }
-    },
+    ...mapActions({
+      togglePlay: "togglePlay",
+      fetchSongs: "fetchSongs",
+    }),
+    // togglePlay() {
+
+    // if (this.audio.paused) {
+    //   this.audio.play();
+    //   this.isTimerPlaying = true;
+    //   this.isPlaying = true;
+    // } else {
+    //   this.audio.pause();
+    //   this.isTimerPlaying = false;
+    //   this.isPlaying = false;
+    // }
+    // },
     nextSong() {
+      // this.audio.src = this._audio;
       this.$store.dispatch("playNextSong");
     },
     /* generateTime() {
@@ -260,17 +248,17 @@ export default {
   //   this.audio = new Audio();
   //   this.audio.src = this.audioSrc;
   // },
-  created() {
-    // let vm = this;
-    // this.currentTrack = this.tracks[0];
-    // this.audio = new Audio();
-    // this.tracks = this.p_tracks;
-    // console.log("title: ", this.title);
-    // this.audio.src = this.audioSrc;
-    // this.audio.src = this.$store.getters.getCurrentSong;
-    // this.audio.src = this.getCurrentSongAudio;
-    //"https://r8---sn-8xgp1vo-2iae.googlevideo.com/videoplayback?expire=1616728010&ei=avtcYKHDK4qI2LYP9JO-mAg&ip=100.11.120.125&id=o-AHlGCr54QPJgUjrEc5cI7jGCReluaRAE6bWP3TDD_7L7&itag=251&source=youtube&requiressl=yes&mh=YT&mm=31%2C29&mn=sn-8xgp1vo-2iae%2Csn-ab5szn7y&ms=au%2Crdu&mv=m&mvi=8&pl=16&gcr=us&initcwndbps=1962500&vprv=1&mime=audio%2Fwebm&ns=mrCg7UmhsKIwe9SjLrafuosF&gir=yes&clen=7340368&dur=398.541&lmt=1565320271355570&mt=1616706043&fvip=6&keepalive=yes&fexp=24001373%2C24007246&beids=23886201&c=WEB&txp=2311222&n=gK_WimR83bd6FMEfIj3PM&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cgcr%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgfSCXZIyfBLmWZR6Zy3R_h7kg9_SMoNG-q3q6KpD5TgACIEb7PX6J6bPer7ikl30OaIu4_WcGFOlMD3uT2cssnejf&sig=AOq0QJ8wRAIgOgHLS8a_LY9I8Y50zXZcfE5E-9tI9AZGhZue68WfGWQCIBRJiD3buMTX0vPhQMPwYslR1-kxwbDPeJavSM2hZVA4";
-    /* this.audio.src = this.currentTrack.source;
+  // created() {
+  // let vm = this;
+  // this.currentTrack = this.tracks[0];
+  // this.audio = new Audio();
+  // this.tracks = this.p_tracks;
+  // console.log("title: ", this.title);
+  // this.audio.src = this.audioSrc;
+  // this.audio.src = this.$store.getters.getCurrentSong;
+  // this.audio.src = this.getCurrentSongAudio;
+  //"https://r8---sn-8xgp1vo-2iae.googlevideo.com/videoplayback?expire=1616728010&ei=avtcYKHDK4qI2LYP9JO-mAg&ip=100.11.120.125&id=o-AHlGCr54QPJgUjrEc5cI7jGCReluaRAE6bWP3TDD_7L7&itag=251&source=youtube&requiressl=yes&mh=YT&mm=31%2C29&mn=sn-8xgp1vo-2iae%2Csn-ab5szn7y&ms=au%2Crdu&mv=m&mvi=8&pl=16&gcr=us&initcwndbps=1962500&vprv=1&mime=audio%2Fwebm&ns=mrCg7UmhsKIwe9SjLrafuosF&gir=yes&clen=7340368&dur=398.541&lmt=1565320271355570&mt=1616706043&fvip=6&keepalive=yes&fexp=24001373%2C24007246&beids=23886201&c=WEB&txp=2311222&n=gK_WimR83bd6FMEfIj3PM&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cgcr%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgfSCXZIyfBLmWZR6Zy3R_h7kg9_SMoNG-q3q6KpD5TgACIEb7PX6J6bPer7ikl30OaIu4_WcGFOlMD3uT2cssnejf&sig=AOq0QJ8wRAIgOgHLS8a_LY9I8Y50zXZcfE5E-9tI9AZGhZue68WfGWQCIBRJiD3buMTX0vPhQMPwYslR1-kxwbDPeJavSM2hZVA4";
+  /* this.audio.src = this.currentTrack.source;
     this.audio.ontimeupdate = function () {
       vm.generateTime();
     };
@@ -281,6 +269,6 @@ export default {
       vm.nextTrack();
       this.isTimerPlaying = true;
     }; */
-  },
+  // },
 };
 </script>
