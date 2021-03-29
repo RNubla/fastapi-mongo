@@ -17,15 +17,24 @@ export default createStore({
     SET_SONGS(state, songs) {
       state.audio = new Audio();
       state.songs = songs;
-      console.log("SET_SONG", state.songs);
+      // console.log("SET_SONG", state.songs);
     },
     ADD_SONG(state, payload) {
       state.songs.push(payload);
       console.log("ADD_SONG", state.songs);
     },
     RESET_TRACK(state) {
-      console.log(state.currentSongIndex);
       state.currentSongIndex = 0;
+      state.audio.src = state.currentSong.audio_src;
+      state.isPlaying = false;
+    },
+    ON_LOAD_SONGS(state) {
+      state.currentSong.title = state.songs[state.currentSongIndex].music_name;
+      state.currentSong.artist =
+        state.songs[state.currentSongIndex].music_artist;
+      state.currentSong.audio_src =
+        state.songs[state.currentSongIndex].audio_url;
+      state.audio.src = state.songs[state.currentSongIndex].audio_url;
     },
     NEXT_SONG(state) {
       // Title
@@ -38,31 +47,18 @@ export default createStore({
         state.songs[state.currentSongIndex].audio_url;
 
       state.currentSong.id = state.songs[state.currentSongIndex].id;
-
-      console.log(state.currentSong);
-      // console.log(state.songs[state.currentSongIndex].audio_url);
+      state.audio.src = state.currentSong.audio_src;
+      console.log("nextSongMutation", state.currentSong);
     },
   },
   getters: {
     getLengthOfCurrentSong: (state) => {
       return state.currentSong.length;
     },
-    onLoadSongs: (state) => {
-      return {
-        title: (state.currentSong.title =
-          state.songs[state.currentSongIndex].music_name),
-        artist: (state.currentSong.artist =
-          state.songs[state.currentSongIndex].music_artist),
-        audio: (state.currentSong.audio_src =
-          state.songs[state.currentSongIndex].audio_url),
-      };
-      // (state.currentSong.title =
-      //   state.songs[state.currentSongIndex].music_name),
-      //   (state.currentSong.artist =
-      //     state.songs[state.currentSongIndex].music_artist),
-      //   (state.currentSong.audio_src =
-      //     state.songs[state.currentSongIndex].audio_url);
+    getListOfSongs: (state) => {
+      return state.songs;
     },
+
     getUpdatedSongs: (state) => {
       return state.songs;
     },
@@ -86,14 +82,14 @@ export default createStore({
     },
   },
   actions: {
-    async fetchSongs({ commit, getters }) {
+    async fetchSongs({ commit }) {
       await axios
-        .get("http://localhost:8000/music")
+        // .get("http://localhost:8000/music")
+        .get("http://192.168.1.233:8000/music")
         .then((response) => {
           commit("SET_SONGS", response.data.data);
-          getters.onLoadSongs;
-
-          console.log("fetch current song index", getters.onLoadSongs);
+          // getters.onLoadSongs;
+          commit("ON_LOAD_SONGS");
         })
         .catch((e) => {
           console.log(e);
@@ -101,7 +97,8 @@ export default createStore({
     },
     async addSong({ commit }, payload) {
       await axios
-        .post("http://localhost:8000/music", payload)
+        // .post("http://localhost:8000/music", payload)
+        .post("http://192.168.1.233:8000/music", payload)
         .then((response) => {
           commit("ADD_SONG", response.data.data);
         })
@@ -110,25 +107,25 @@ export default createStore({
         });
     },
     togglePlay({ state }) {
+      console.log("audiosrc", state.currentSong.title);
+      console.log("audiosrc", state.currentSong.audio_src);
       if (state.audio.paused) {
+        // state.audio.src = state.currentSong.audio_src;
         state.audio.play();
         state.isPlaying = true;
-        console.log(state.isPlaying);
+        // console.log(state.isPlaying);
       } else {
         state.audio.pause();
         state.isPlaying = false;
-        console.log(state.isPlaying);
+        // console.log(state.isPlaying);
       }
     },
     playNextSong({ commit, state, getters }) {
-      console.log("current song count", getters.songsCount);
       if (state.currentSongIndex < getters.songsCount - 1) {
-        // commit("NEXT_SONG");
         state.currentSongIndex++;
-        state.audio.src = getters.getCurrentSongAudio;
+        state.isPlaying = false;
       } else {
-        // commit("RESET_TRACK");
-        state.currentSongIndex = 0;
+        commit("RESET_TRACK");
       }
       commit("NEXT_SONG");
     },

@@ -1,113 +1,131 @@
 <template>
-  <div
-    class="max-w-md mx-auto bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-2xl"
-  >
-    <div class="md:flex">
-      <div class="md:flex-shrink-0">
-        <img
-          class="h-48 w-full object-cover md:w-48"
-          src="https://tailwindcss.com/img/card-top.jpg"
-          alt=""
-        />
-      </div>
-      <div class="p-4 flex flex-col justify-center">
-        <div class="uppercase tracking-wide text-sm font-semibold">
-          {{ title }}
+  <div class="flex-inline">
+    <div
+      class="max-w-md mx-auto my-10 bg-white rounded-xl shadow-2xl overflow-hidden md:max-w-2xl"
+    >
+      <div class="md:flex">
+        <div class="md:flex-shrink-0">
+          <img
+            class="h-48 w-full object-cover md:w-48"
+            src="https://tailwindcss.com/img/card-top.jpg"
+            alt=""
+          />
         </div>
-        <div class="block mt-1 text-md leading-tight font-medium text-gray-500">
-          {{ artist }}
-        </div>
-      </div>
-      <div class="p-4">
-        <!-- Buttons -->
-        <div class="flex justify-evenly mx-auto px-8">
-          <!-- Rewind -->
-          <div class="mx-4">
-            <div
-              class="rounded-full h-12 w-12 bg-white shadow-inner flex items-center justify-center"
-            >
-              <svg
-                class="h-8 w-8 fill-current text-gray-400"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z"
-                />
-              </svg>
-            </div>
+        <div class="p-4 flex flex-col justify-center">
+          <div class="uppercase tracking-wide text-sm font-semibold">
+            {{ title }}
           </div>
-          <!-- Play Button -->
-          <div class="mx-4">
-            <div
-              @click.prevent="togglePlay()"
-              class="rounded-full h-16 w-16 bg-white shadow-inner flex items-center justify-center"
-            >
-              <svg
-                v-if="!this.$store.state.isPlaying"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <svg
-                v-else
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-          </div>
-          <!-- Forward -->
-          <div class="mx-4">
-            <div
-              @click="nextSong"
-              class="rounded-full h-12 w-12 bg-white shadow-inner flex items-center justify-center"
-            >
-              <svg
-                class="fill-current text-gray-400"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M11.933 12.8a1 1 0 000-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.333-4zM19.933 12.8a1 1 0 000-1.6l-5.333-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.333-4z"
-                />
-              </svg>
-            </div>
+          <div
+            class="block mt-1 text-md leading-tight font-medium text-gray-500"
+          >
+            {{ artist }}
           </div>
         </div>
+        <div class="p-4">
+          <!-- Buttons -->
+          <div class="flex justify-evenly mx-auto px-8">
+            <!-- Rewind -->
+            <div class="mx-4">
+              <div
+                class="rounded-full h-12 w-12 bg-white shadow-inner flex items-center justify-center"
+              >
+                <svg
+                  class="h-8 w-8 fill-current text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0019 16V8a1 1 0 00-1.6-.8l-5.333 4zM4.066 11.2a1 1 0 000 1.6l5.334 4A1 1 0 0011 16V8a1 1 0 00-1.6-.8l-5.334 4z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <!-- Play Button -->
+            <div class="mx-4">
+              <div
+                @click.prevent="togglePlay()"
+                class="rounded-full h-16 w-16 bg-white shadow-inner flex items-center justify-center"
+              >
+                <svg
+                  v-if="!this.$store.state.isPlaying"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <svg
+                  v-else
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <!-- Forward -->
+            <div class="mx-4">
+              <div
+                @click="nextSong"
+                class="rounded-full h-12 w-12 bg-white shadow-inner flex items-center justify-center"
+              >
+                <svg
+                  class="fill-current text-gray-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11.933 12.8a1 1 0 000-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.333-4zM19.933 12.8a1 1 0 000-1.6l-5.333-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.333-4z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
+    <div
+      class="bg-gray-200"
+      mb-12
+      rounded-xl
+      shadow-2xl
+      overflow-hidden
+      inline-flex
+    >
+      <ul class="">
+        <li v-for="song in songs" :key="song">
+          {{ song.music_name }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -122,6 +140,7 @@ export default {
       _og: "getCurrentSongOriginalURL",
       id: "getCurrentSongID",
       _audio: "getCurrentSongAudio",
+      songs: "getListOfSongs",
     }),
   },
   data() {
@@ -257,7 +276,6 @@ export default {
   // this.audio.src = this.audioSrc;
   // this.audio.src = this.$store.getters.getCurrentSong;
   // this.audio.src = this.getCurrentSongAudio;
-  //"https://r8---sn-8xgp1vo-2iae.googlevideo.com/videoplayback?expire=1616728010&ei=avtcYKHDK4qI2LYP9JO-mAg&ip=100.11.120.125&id=o-AHlGCr54QPJgUjrEc5cI7jGCReluaRAE6bWP3TDD_7L7&itag=251&source=youtube&requiressl=yes&mh=YT&mm=31%2C29&mn=sn-8xgp1vo-2iae%2Csn-ab5szn7y&ms=au%2Crdu&mv=m&mvi=8&pl=16&gcr=us&initcwndbps=1962500&vprv=1&mime=audio%2Fwebm&ns=mrCg7UmhsKIwe9SjLrafuosF&gir=yes&clen=7340368&dur=398.541&lmt=1565320271355570&mt=1616706043&fvip=6&keepalive=yes&fexp=24001373%2C24007246&beids=23886201&c=WEB&txp=2311222&n=gK_WimR83bd6FMEfIj3PM&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cgcr%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgfSCXZIyfBLmWZR6Zy3R_h7kg9_SMoNG-q3q6KpD5TgACIEb7PX6J6bPer7ikl30OaIu4_WcGFOlMD3uT2cssnejf&sig=AOq0QJ8wRAIgOgHLS8a_LY9I8Y50zXZcfE5E-9tI9AZGhZue68WfGWQCIBRJiD3buMTX0vPhQMPwYslR1-kxwbDPeJavSM2hZVA4";
   /* this.audio.src = this.currentTrack.source;
     this.audio.ontimeupdate = function () {
       vm.generateTime();
